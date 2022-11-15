@@ -40,7 +40,7 @@ const GET_handler = (req, res) => {
   }
 }
 
-const POST_handler = (req, res) => {
+const POST_handler = async (req, res) => {
   try {
     let data = req.body;
     //Make sure this is a page subscription
@@ -112,16 +112,14 @@ function receivedMessage(event) {
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
 
-    sendTextMessage(senderID, "Quick reply tapped");
-    return;
+    return sendTextMessage(senderID, "Quick reply tapped");
   }
 
   if (messageText) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    sendTextMessage(senderID, messageText);
-    return
+    return sendTextMessage(senderID, messageText);
   }
 }
 
@@ -137,14 +135,14 @@ function sendTextMessage(recipientId, messageText) {
     message: {
       text: messageText
     },
-    messaging_type: "UPDATE"
+    messaging_type: "RESPONSE"
   };
 
-  callSendAPI(messageData);
+  return callSendAPI(messageData);
 }
 
 function callSendAPI(messageData) {
-  axios({
+  return axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
