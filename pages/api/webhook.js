@@ -32,7 +32,7 @@ const GET_handler = (req, res) => {
       res.status(200).send(challenge);
     } else {
       // Respond with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
+      res.status(403).send("error");
     }
   }
 }
