@@ -1,5 +1,4 @@
 import axios from "axios"
-import { CronJob } from 'cron'
 
 const config = {
   "appSecret": "690c409400dcb68f39cfaf21b22ba720",
@@ -13,16 +12,6 @@ const config = {
 const sampleResponse = {
   "ngu à?": "có m ngu á :)"
 }
-
-const job = new CronJob(
-	'30 * * * * *',
-	function() {
-		sendTextMessage(config.myInboxId, "Test cron every 30s")
-	},
-	null,
-	false,
-	'America/Los_Angeles'
-);
 
 export default function handler(req, res) {
   switch (req.method.toUpperCase()) {
@@ -103,14 +92,18 @@ function receivedMessage(event) {
   let message = event.message;
   let messageText = message.text;
 
+  let interval;
+
   if (messageText) {
     if(messageText === "/testcron"){
-      job.start()
+      interval = setInterval(() => {
+        sendTextMessage(senderID, "Test cron every 10s");
+      }, 10000);
       return sendTextMessage(senderID, "Cron has been started!");
     }
 
     if(messageText === "/cancelcron"){
-      job.stop()
+      clearInterval(interval)
       return sendTextMessage(senderID, "Cron has been canceled!");
     }
 
