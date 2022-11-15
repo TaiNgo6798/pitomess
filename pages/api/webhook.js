@@ -55,9 +55,9 @@ export default function handler(req, res) {
     //   // successfully received the callback. Otherwise, the request will time out.
     //   res.status(200).send();
     // }
-    res.status(200).send();
+    res.status(200).send("");
   } catch (err) {
-    res.status(200).send();
+    res.status(200).send("");
   }
 }
 
