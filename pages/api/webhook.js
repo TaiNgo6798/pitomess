@@ -15,9 +15,9 @@ const sampleResponse = {
 }
 
 const job = new CronJob(
-	'* * * * * *',
+	'30 * * * * *',
 	function() {
-		sendTextMessage(config.myInboxId, "Test cron")
+		sendTextMessage(config.myInboxId, "Test cron every 30s")
 	},
 	null,
 	false,
@@ -107,6 +107,11 @@ function receivedMessage(event) {
     if(messageText === "/testcron"){
       job.start()
       return sendTextMessage(senderID, "Cron has been started!");
+    }
+
+    if(messageText === "/cancelcron"){
+      job.stop()
+      return sendTextMessage(senderID, "Cron has been canceled!");
     }
 
     return sendTextMessage(senderID, sampleResponse[messageText] || messageText);
