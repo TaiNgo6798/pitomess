@@ -72,10 +72,9 @@ app.get('/webhook', function (req, res) {
   }
 });
 
-app.use('/check', function (req, res) {
+app.get('/check', function (req, res) {
   res.status(200).send("Hehe I'm gud");
 });
-
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
