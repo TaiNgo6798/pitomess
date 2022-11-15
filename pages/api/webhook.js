@@ -1,5 +1,4 @@
-const axios = require('axios').default;
-
+import axios from "axios"
 
 const config = {
   "appSecret": "690c409400dcb68f39cfaf21b22ba720",
