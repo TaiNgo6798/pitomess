@@ -142,11 +142,14 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 async function callSendAPI(messageData) {
-  const res = await axios({
+  await axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
   })
-  console.log({ res })
-  console.log("Done")
+  console.log("Done", {
+    url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
+    method: 'post',
+    data: messageData
+  })
 }
