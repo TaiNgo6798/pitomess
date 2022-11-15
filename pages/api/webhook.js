@@ -148,15 +148,6 @@ function sendTextMessage(recipientId, messageText) {
 
 function callSendAPI(messageData) {
   axios({
-    method: 'post',
-    url: '/user/12345',
-    data: {
-      firstName: 'Fred',
-      lastName: 'Flintstone'
-    }
-  });
-
-  axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
