@@ -53,7 +53,7 @@ const POST_handler = (req, res) => {
           if (messagingEvent.message) {
             receivedMessage(messagingEvent);
           } else {
-            console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+            console.log("Webhook received unknown messagingEvent: ", pageEntry);
           }
         });
       });
