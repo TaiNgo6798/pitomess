@@ -29,10 +29,6 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 export default function handler(req, res) {
-  webhook(req, res)
-}
-
-const webhook = (req, res) => {
   try {
     let data = req.body;
     // Make sure this is a page subscription
@@ -62,8 +58,8 @@ const webhook = (req, res) => {
     res.status(200).end();
   } catch (err) {
     res.status(200).end();
-  }
-}
+  }}
+
 
 /*
  * Message Event
