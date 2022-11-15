@@ -1,5 +1,5 @@
 import axios from "axios"
-import CronJob from 'cron'
+import { CronJob } from 'cron'
 
 const config = {
   "appSecret": "690c409400dcb68f39cfaf21b22ba720",
