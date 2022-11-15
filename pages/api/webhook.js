@@ -1,32 +1,12 @@
-const
-  config = require('config'),
-  request = require('request');
+const request = require('request');
 
-// // App Secret can be retrieved from the App Dashboard
-// const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
-//   process.env.MESSENGER_APP_SECRET :
-//   config.get('appSecret');
-
-// // Arbitrary value used to validate a webhook
-// const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
-//   (process.env.MESSENGER_VALIDATION_TOKEN) :
-//   config.get('validationToken');
-
-// // Generate a page access token for your page from the App Dashboard
-// const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
-//   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-//   config.get('pageAccessToken');
-
-// // URL where the app is running (include protocol). Used to point to scripts and 
-// // assets located at this address. 
-// const SERVER_URL = (process.env.SERVER_URL) ?
-//   (process.env.SERVER_URL) :
-//   config.get('serverURL');
-
-// if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
-//   console.error("Missing config values");
-//   process.exit(1);
-// }
+const config = {
+  "appSecret": "690c409400dcb68f39cfaf21b22ba720",
+  "pageAccessToken": "EABPXjDABNpMBAOrZC4xlTY1J6f8zNUb6GXFBM3BqZCIZATUq3eY17YpjkRv5cUXS3ablaFYlDxJfhRL2yduYmnqxxrytzznery8CRo6nxBiRsw3zcTLVcxdfTwTS4uTeQKr7ksyzu1Oti5uVa72u6PjAbcGqocUkBJqPW0qwAiuMuGgDYmQ",
+  "validationToken": "pitotoken123$",
+  "serverURL": "localhost",
+  "pageId": "100088010493665"
+}
 
 export default function handler(req, res) {
   try {
