@@ -38,6 +38,7 @@ const GET_handler = (req, res) => {
 }
 
 const POST_handler = (req, res) => {
+  console.log("POST_handler")
   try {
     let data = req.body;
     //Make sure this is a page subscription
@@ -85,6 +86,8 @@ const POST_handler = (req, res) => {
  * 
  */
 function receivedMessage(event) {
+  console.log("receivedMessage")
+
   let senderID = event.sender.id;
   let recipientID = event.recipient.id;
   let timeOfMessage = event.timestamp;
@@ -121,10 +124,8 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText) {
-      default:
-        sendTextMessage(senderID, messageText);
-    }
+    sendTextMessage(senderID, messageText);
+    return
   }
 }
 
