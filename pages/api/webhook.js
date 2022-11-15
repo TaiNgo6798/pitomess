@@ -56,10 +56,10 @@ const POST_handler = (req, res) => {
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
           if (messagingEvent.message) {
-            console.log(JSON.stringify(req))
+            console.log(req)
             receivedMessage(messagingEvent);
           } else {
-            console.log("Webhook received unknown messagingEvent: ", JSON.stringify(req));
+            console.log("Webhook received unknown messagingEvent: ", messagingEvent);
           }
         });
       });
