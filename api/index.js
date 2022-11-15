@@ -72,7 +72,7 @@ app.get('/webhook', function (req, res) {
   }
 });
 
-app.get('/webhook', function (req, res) {
+app.get('/webhook2', function (req, res) {
   res.status(200).send("from index.js");
 });
 
