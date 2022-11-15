@@ -9,6 +9,10 @@ const config = {
   "myInboxId": "6043597102340868" //taingo
 }
 
+const sampleResponse = {
+  "ngu à?": "có m ngu á :)"
+}
+
 export default function handler(req, res) {
   switch (req.method.toUpperCase()) {
     case "POST":
@@ -115,7 +119,7 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    return sendTextMessage(senderID, messageText);
+    return sendTextMessage(senderID, sampleResponse[messageText] || messageText);
   }
 }
 
