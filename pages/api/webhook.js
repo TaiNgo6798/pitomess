@@ -1,3 +1,6 @@
+const axios = require('axios').default;
+
+
 const config = {
   "appSecret": "690c409400dcb68f39cfaf21b22ba720",
   "pageAccessToken": "EABPXjDABNpMBAOrZC4xlTY1J6f8zNUb6GXFBM3BqZCIZATUq3eY17YpjkRv5cUXS3ablaFYlDxJfhRL2yduYmnqxxrytzznery8CRo6nxBiRsw3zcTLVcxdfTwTS4uTeQKr7ksyzu1Oti5uVa72u6PjAbcGqocUkBJqPW0qwAiuMuGgDYmQ",
@@ -85,8 +88,6 @@ const POST_handler = (req, res) => {
  * 
  */
 function receivedMessage(event) {
-  console.log("receivedMessage")
-
   let senderID = event.sender.id;
   let recipientID = event.recipient.id;
   let timeOfMessage = event.timestamp;
@@ -146,14 +147,21 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function callSendAPI(messageData) {
-  console.log({callSendAPI: messageData})
-  request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: config.pageAccessToken },
-    method: 'POST',
-    json: messageData
+  axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+      firstName: 'Fred',
+      lastName: 'Flintstone'
+    }
+  });
 
-  }, function (error, response, body) {
+  axios({
+    url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
+    method: 'post',
+    data: messageData
+
+  }).then(function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let recipientId = body.recipient_id;
       let messageId = body.message_id;
