@@ -136,7 +136,7 @@ function sendTextMessage(recipientId, messageText) {
     message: {
       text: messageText
     },
-    messaging_type: "RESPONSE"
+    messaging_type: "UPDATE"
   };
 
   callSendAPI(messageData);
