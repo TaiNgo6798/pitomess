@@ -47,6 +47,7 @@ const POST_handler = async (req, res) => {
     if (data.object == 'page') {
       // Iterate over each entry
       // There may be multiple if batched
+      console.time("sending")
       for (const entry of data.entry) {
         for (const messagingEvent of entry.messaging) {
           if (messagingEvent.message) {
@@ -54,7 +55,7 @@ const POST_handler = async (req, res) => {
           }
         }
       }
-
+      console.timeEnd("sending")
       // Assume all went well.
       //
       // You must send back a 200, within 20 seconds, to let us know you've 
