@@ -89,6 +89,7 @@ const POST_handler = (req, res) => {
  * 
  */
 function receivedMessage(event) {
+  console.log(":::::: Running receivedMessage ::::::")
   let senderID = event.sender.id;
   let recipientID = event.recipient.id;
   let timeOfMessage = event.timestamp;
