@@ -87,12 +87,11 @@ const POST_handler = async (req, res) => {
  * then we'll simply confirm that we've received the attachment.
  * 
  */
+let interval;
 function receivedMessage(event) {
   let senderID = event.sender.id;
   let message = event.message;
   let messageText = message.text;
-
-  let interval;
 
   if (messageText) {
     if(messageText === "/testcron"){
