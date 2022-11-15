@@ -1,4 +1,5 @@
 import axios from "axios"
+import cron from 'cron'
 
 const config = {
   "appSecret": "690c409400dcb68f39cfaf21b22ba720",
@@ -12,6 +13,16 @@ const config = {
 const sampleResponse = {
   "ngu à?": "có m ngu á :)"
 }
+
+const job = new CronJob(
+	'* * * * * *',
+	function() {
+		sendTextMessage(config.myInboxId, "Test cron")
+	},
+	null,
+	false,
+	'America/Los_Angeles'
+);
 
 export default function handler(req, res) {
   switch (req.method.toUpperCase()) {
@@ -89,36 +100,15 @@ const POST_handler = async (req, res) => {
  */
 function receivedMessage(event) {
   let senderID = event.sender.id;
-  let recipientID = event.recipient.id;
-  let timeOfMessage = event.timestamp;
   let message = event.message;
-
-  let isEcho = message.is_echo;
-  let messageId = message.mid;
-  let appId = message.app_id;
-  let metadata = message.metadata;
-
-  // You may get a text or attachment but not both
   let messageText = message.text;
-  let quickReply = message.quick_reply;
-
-  if (isEcho) {
-    // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s",
-      messageId, appId, metadata);
-    return;
-  } else if (quickReply) {
-    let quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
-
-    return sendTextMessage(senderID, "Quick reply tapped");
-  }
 
   if (messageText) {
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
+    if(messageText === "/testcron"){
+      job.start()
+      return sendTextMessage(senderID, "Cron has been started!");
+    }
+
     return sendTextMessage(senderID, sampleResponse[messageText] || messageText);
   }
 }
