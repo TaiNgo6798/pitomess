@@ -72,7 +72,7 @@ app.get('/webhook', function (req, res) {
   }
 });
 
-app.get('/', function (req, res) {
+app.get('/check-health', function (req, res) {
   res.status(200).send("Hehe I'm gud");
 });
 
