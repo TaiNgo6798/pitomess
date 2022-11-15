@@ -148,11 +148,15 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function callSendAPI(messageData) {
+  console.log(":::::: Doing callSendAPI with axios ::::::")
   axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
   }).then(function (error, response, body) {
+    console.log(":::::: Done ::::::")
+    console.log({error, response, body})
+    
     if (!error && response.statusCode == 200) {
       let recipientId = body.recipient_id;
       let messageId = body.message_id;
