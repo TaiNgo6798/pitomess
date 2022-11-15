@@ -32,29 +32,29 @@ export default function handler(req, res) {
   try {
     let data = req.body;
     // Make sure this is a page subscription
-    if (data.object == 'page') {
-      // Iterate over each entry
-      // There may be multiple if batched
-      data.entry.forEach(function (pageEntry) {
-        let pageID = pageEntry.id;
-        let timeOfEvent = pageEntry.time;
+    // if (data.object == 'page') {
+    //   // Iterate over each entry
+    //   // There may be multiple if batched
+    //   data.entry.forEach(function (pageEntry) {
+    //     let pageID = pageEntry.id;
+    //     let timeOfEvent = pageEntry.time;
 
-        // Iterate over each messaging event
-        pageEntry.messaging.forEach(function (messagingEvent) {
-          if (messagingEvent.message) {
-            //receivedMessage(messagingEvent);
-          } else {
-            console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-          }
-        });
-      });
+    //     // Iterate over each messaging event
+    //     pageEntry.messaging.forEach(function (messagingEvent) {
+    //       if (messagingEvent.message) {
+    //         //receivedMessage(messagingEvent);
+    //       } else {
+    //         console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+    //       }
+    //     });
+    //   });
 
-      // Assume all went well.
-      //
-      // You must send back a 200, within 20 seconds, to let us know you've 
-      // successfully received the callback. Otherwise, the request will time out.
-      res.status(200).send();
-    }
+    //   // Assume all went well.
+    //   //
+    //   // You must send back a 200, within 20 seconds, to let us know you've 
+    //   // successfully received the callback. Otherwise, the request will time out.
+    //   res.status(200).send();
+    // }
     res.status(200).send();
   } catch (err) {
     res.status(200).send();
