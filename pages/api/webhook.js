@@ -1,10 +1,43 @@
 const config = {
   "appSecret": "690c409400dcb68f39cfaf21b22ba720",
   "pageAccessToken": "EABPXjDABNpMBAOrZC4xlTY1J6f8zNUb6GXFBM3BqZCIZATUq3eY17YpjkRv5cUXS3ablaFYlDxJfhRL2yduYmnqxxrytzznery8CRo6nxBiRsw3zcTLVcxdfTwTS4uTeQKr7ksyzu1Oti5uVa72u6PjAbcGqocUkBJqPW0qwAiuMuGgDYmQ",
+  "validationToken": "pitotoken123$",
+  "serverURL": "localhost",
   "pageId": "100088010493665"
 }
 
 export default function handler(req, res) {
+  switch (req.method.toUpperCase()) {
+    case "POST":
+      POST_handler(req, res)
+      break
+    case "GET":
+      GET_handler(req, res)
+      break
+  }
+}
+
+const GET_handler = (req, res) => {
+  // Parse the query params
+  let mode = req.query["hub.mode"];
+  let token = req.query["hub.verify_token"];
+  let challenge = req.query["hub.challenge"];
+
+  // Check if a token and mode is in the query string of the request
+  if (mode && token) {
+    // Check the mode and token sent is correct
+    if (mode === "subscribe" && token === config.verifyToken) {
+      // Respond with the challenge token from the request
+      console.log("WEBHOOK_VERIFIED");
+      res.status(200).send(challenge);
+    } else {
+      // Respond with '403 Forbidden' if verify tokens do not match
+      res.sendStatus(403);
+    }
+  }
+}
+
+const POST_handler = (req, res) => {
   try {
     let data = req.body;
     //Make sure this is a page subscription
