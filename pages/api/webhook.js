@@ -5,7 +5,8 @@ const config = {
   "pageAccessToken": "EABPXjDABNpMBAOrZC4xlTY1J6f8zNUb6GXFBM3BqZCIZATUq3eY17YpjkRv5cUXS3ablaFYlDxJfhRL2yduYmnqxxrytzznery8CRo6nxBiRsw3zcTLVcxdfTwTS4uTeQKr7ksyzu1Oti5uVa72u6PjAbcGqocUkBJqPW0qwAiuMuGgDYmQ",
   "validationToken": "pitotoken123$",
   "serverURL": "localhost",
-  "pageId": "100088010493665"
+  "pageId": "100088010493665",
+  "myInboxId": "6043597102340868" //taingo
 }
 
 export default function handler(req, res) {
@@ -86,7 +87,6 @@ const POST_handler = (req, res) => {
  * 
  */
 function receivedMessage(event) {
-  console.log(":::::: Running receivedMessage ::::::")
   let senderID = event.sender.id;
   let recipientID = event.recipient.id;
   let timeOfMessage = event.timestamp;
@@ -144,14 +144,11 @@ function sendTextMessage(recipientId, messageText) {
 
 function callSendAPI(messageData) {
   console.log(":::::: Doing callSendAPI with axios ::::::")
-  console.log(messageData)
   axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
   }).then(function (error, response, body) {
-    console.log(":::::: Done ::::::")
-    console.log({ error, response, body })
 
     if (!error && response.statusCode == 200) {
       let recipientId = body.recipient_id;
