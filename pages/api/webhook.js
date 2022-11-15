@@ -63,8 +63,7 @@ const POST_handler = (req, res) => {
       // You must send back a 200, within 20 seconds, to let us know you've 
       // successfully received the callback. Otherwise, the request will time out.
       res.status(200).send("ok");
-    }
-    res.status(200).send("ok");
+    } else res.status(200).send("ok");
   } catch (err) {
     res.status(200).send("ok");
   }
