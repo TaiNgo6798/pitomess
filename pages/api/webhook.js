@@ -53,7 +53,6 @@ const POST_handler = async (req, res) => {
 
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
-          console.log({ messagingEvent })
           if (messagingEvent.message) {
             receivedMessage(messagingEvent);
           }
@@ -147,7 +146,7 @@ async function callSendAPI(messageData) {
     method: 'post',
     data: messageData
   })
-  console.log("Done", {
+  console.log("::::: Done :::::", {
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
