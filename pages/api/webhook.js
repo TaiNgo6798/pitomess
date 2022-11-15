@@ -54,6 +54,7 @@ const POST_handler = (req, res) => {
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
           if (messagingEvent.message) {
+            console.log(JSON.stringify(req))
             receivedMessage(messagingEvent);
           } else {
             console.log("Webhook received unknown messagingEvent: ", JSON.stringify(req));
@@ -92,10 +93,6 @@ function receivedMessage(event) {
   let recipientID = event.recipient.id;
   let timeOfMessage = event.timestamp;
   let message = event.message;
-
-  console.log("Received message for user %d and page %d at %d with message:",
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
 
   let isEcho = message.is_echo;
   let messageId = message.mid;
@@ -149,14 +146,15 @@ function sendTextMessage(recipientId, messageText) {
 
 function callSendAPI(messageData) {
   console.log(":::::: Doing callSendAPI with axios ::::::")
+  console.log(messageData)
   axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
   }).then(function (error, response, body) {
     console.log(":::::: Done ::::::")
-    console.log({error, response, body})
-    
+    console.log({ error, response, body })
+
     if (!error && response.statusCode == 200) {
       let recipientId = body.recipient_id;
       let messageId = body.message_id;
