@@ -48,7 +48,7 @@ const POST_handler = async (req, res) => {
       // Iterate over each entry
       // There may be multiple if batched
       for (const entry of data.entry) {
-        for (const messagingEvent of entry) {
+        for (const messagingEvent of entry.messaging) {
           if (messagingEvent.message) {
             await receivedMessage(messagingEvent);
           }
