@@ -138,11 +138,11 @@ function sendTextMessage(recipientId, messageText) {
     messaging_type: "RESPONSE"
   };
 
-  return callSendAPI(messageData);
+  callSendAPI(messageData);
 }
 
 function callSendAPI(messageData) {
-  return axios({
+  axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
