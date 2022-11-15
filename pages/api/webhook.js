@@ -95,6 +95,7 @@ function receivedMessage(event) {
 
   if (messageText) {
     if(messageText === "/testcron"){
+      clearInterval(interval)
       interval = setInterval(() => {
         sendTextMessage(senderID, "Test cron every 10s");
       }, 10000);
