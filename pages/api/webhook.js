@@ -53,6 +53,7 @@ const POST_handler = (req, res) => {
 
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
+          console.log({ messagingEvent })
           if (messagingEvent.message) {
             receivedMessage(messagingEvent);
           }
@@ -143,7 +144,6 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function callSendAPI(messageData) {
-  console.log(":::::: Doing callSendAPI with axios ::::::")
   axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
