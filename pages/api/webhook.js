@@ -53,11 +53,11 @@ export default function handler(req, res) {
       //
       // You must send back a 200, within 20 seconds, to let us know you've 
       // successfully received the callback. Otherwise, the request will time out.
-      res.status(200).end();
+      res.status(200).send();
     }
-    res.status(200).end();
+    res.status(200).send();
   } catch (err) {
-    res.status(200).end();
+    res.status(200).send();
   }}
 
 
