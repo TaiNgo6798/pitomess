@@ -29,22 +29,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 export default function handler(req, res) {
-  const { route } = req.query
-
-  switch (route) {
-    case "webhook":
-      webhook(req, res)
-      break;
-    case "check":
-      check(req, res)
-      break;
-
-    default: res.end("Not found!")
-  }
-}
-
-const check = (req, res) => {
-  res.status(200).send("API is online :)");
+  webhook(req, res)
 }
 
 const webhook = (req, res) => {
