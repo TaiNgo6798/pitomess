@@ -40,8 +40,6 @@ const GET_handler = (req, res) => {
 }
 
 const POST_handler = (req, res) => {
-  console.log(":::::: Doing POST_handler ::::::")
-
   try {
     let data = req.body;
     //Make sure this is a page subscription
@@ -55,10 +53,7 @@ const POST_handler = (req, res) => {
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
           if (messagingEvent.message) {
-            console.log(req)
             receivedMessage(messagingEvent);
-          } else {
-            console.log("Webhook received unknown messagingEvent: ", messagingEvent);
           }
         });
       });
