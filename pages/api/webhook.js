@@ -141,26 +141,12 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
-function callSendAPI(messageData) {
-  axios({
+async function callSendAPI(messageData) {
+  const res = await axios({
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
-  }).then(function (error, response, body) {
-
-    if (!error && response.statusCode == 200) {
-      let recipientId = body.recipient_id;
-      let messageId = body.message_id;
-
-      if (messageId) {
-        console.log("Successfully sent message with id %s to recipient %s",
-          messageId, recipientId);
-      } else {
-        console.log("Successfully called Send API for recipient %s",
-          recipientId);
-      }
-    }
-  }).catch(() => {
-    console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
-  });
+  })
+  console.log({ res })
+  console.log("Done")
 }
