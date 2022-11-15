@@ -47,17 +47,13 @@ const POST_handler = async (req, res) => {
     if (data.object == 'page') {
       // Iterate over each entry
       // There may be multiple if batched
-      data.entry.forEach(function (pageEntry) {
-        let pageID = pageEntry.id;
-        let timeOfEvent = pageEntry.time;
-
-        // Iterate over each messaging event
-        pageEntry.messaging.forEach(function (messagingEvent) {
+      for (const entry of data.entry) {
+        for (const messagingEvent of entry) {
           if (messagingEvent.message) {
-            receivedMessage(messagingEvent);
+            await receivedMessage(messagingEvent);
           }
-        });
-      });
+        }
+      }
 
       // Assume all went well.
       //
@@ -137,7 +133,7 @@ function sendTextMessage(recipientId, messageText) {
     messaging_type: "RESPONSE"
   };
 
-  callSendAPI(messageData);
+  return callSendAPI(messageData);
 }
 
 async function callSendAPI(messageData) {
