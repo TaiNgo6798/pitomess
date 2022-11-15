@@ -41,6 +41,8 @@ const GET_handler = (req, res) => {
 }
 
 const POST_handler = (req, res) => {
+  console.log(":::::: Doing POST_handler ::::::")
+
   try {
     let data = req.body;
     //Make sure this is a page subscription
@@ -69,6 +71,7 @@ const POST_handler = (req, res) => {
       res.status(200).send("ok");
     } else res.status(200).send("ok");
   } catch (err) {
+    console.log(err)
     res.status(200).send("ok");
   }
 }
