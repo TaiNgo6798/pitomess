@@ -35,8 +35,6 @@ const GET_handler = (req, res) => {
       res.status(403).send("error");
     }
   }
-
-
 }
 
 const POST_handler = (req, res) => {
@@ -53,7 +51,7 @@ const POST_handler = (req, res) => {
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
           if (messagingEvent.message) {
-            //receivedMessage(messagingEvent);
+            receivedMessage(messagingEvent);
           } else {
             console.log("Webhook received unknown messagingEvent: ", messagingEvent);
           }
