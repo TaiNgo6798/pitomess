@@ -146,9 +146,6 @@ async function callSendAPI(messageData) {
     method: 'post',
     data: messageData
   })
-  console.log("::::: Done :::::", {
-    url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
-    method: 'post',
-    data: messageData
-  })
+  console.log("::::: Done :::::")
+  console.log(messageData)
 }
