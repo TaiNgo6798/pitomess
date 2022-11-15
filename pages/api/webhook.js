@@ -140,7 +140,8 @@ function sendTextMessage(recipientId, messageText) {
     },
     message: {
       text: messageText
-    }
+    },
+    messaging_type: "RESPONSE"
   };
 
   callSendAPI(messageData);
@@ -151,7 +152,6 @@ function callSendAPI(messageData) {
     url: `https://graph.facebook.com/v2.6/me/messages?access_token=${config.pageAccessToken}`,
     method: 'post',
     data: messageData
-
   }).then(function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let recipientId = body.recipient_id;
@@ -164,8 +164,8 @@ function callSendAPI(messageData) {
         console.log("Successfully called Send API for recipient %s",
           recipientId);
       }
-    } else {
-      console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
     }
+  }).catch(() => {
+    console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
   });
 }
