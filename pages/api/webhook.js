@@ -87,26 +87,13 @@ const POST_handler = async (req, res) => {
  * then we'll simply confirm that we've received the attachment.
  * 
  */
-let interval;
+
 function receivedMessage(event) {
   let senderID = event.sender.id;
   let message = event.message;
   let messageText = message.text;
 
   if (messageText) {
-    if(messageText === "/testcron"){
-      clearInterval(interval)
-      interval = setInterval(() => {
-        sendTextMessage(senderID, "Test cron every 10s");
-      }, 10000);
-      return sendTextMessage(senderID, "Cron has been started!");
-    }
-
-    if(messageText === "/cancelcron"){
-      clearInterval(interval)
-      return sendTextMessage(senderID, "Cron has been canceled!");
-    }
-
     return sendTextMessage(senderID, sampleResponse[messageText] || messageText);
   }
 }
