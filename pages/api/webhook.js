@@ -95,6 +95,8 @@ function receivedMessage(event) {
 
   if (messageText) {
     return sendTextMessage(senderID, sampleResponse[messageText] || messageText);
+  } else {
+    return sendTextMessage(senderID, "?");
   }
 }
 
