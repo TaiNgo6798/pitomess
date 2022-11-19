@@ -55,7 +55,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   process.exit(1);
 }
 
-app.get('/check', (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).send("Api is working :)");
 })
 
