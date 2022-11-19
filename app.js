@@ -157,12 +157,9 @@ function receivedMessage(event) {
   let messageAttachments = message.attachments;
 
   if (messageText) {
-    switch (messageText) {
-      default:
-        sendTextMessage(senderID, messageText);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+    sendTextMessage(senderID, "ok em iu :)))");
+  } else {
+    sendTextMessage(senderID, "Khum hỉu hehe");
   }
 }
 
