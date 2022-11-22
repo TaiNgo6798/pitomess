@@ -9,15 +9,13 @@
 
 /* jshint node: true, devel: true */
 'use strict';
-
-const { job } = require('cron');
-
 const
   bodyParser = require('body-parser'),
   config = require('config'),
   crypto = require('crypto'),
   express = require('express'),
   request = require('request'),
+  parser = require('cron-parser'),
   CronJob = require('cron').CronJob;
 
 let app = express();
@@ -160,25 +158,31 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
-const startCron = (callback, cronString) => {
+const startCron = (callback, cronString, senderID, cronText) => {
   let job = new CronJob(
     cronString,
     () => {
-      callback()
+      callback(senderID, cronText)
       job.stop()
     },
     null,
     true,
   );
-
   job.start()
+
+  try {
+    const interval = parser.parseExpression(cronString);
+    sendTextMessage(senderID, `Will notice you at ${interval.next().toISOString()}`)
+  } catch (err) {
+    sendTextMessage(senderID, `Parse error!`)
+  }
   return job
 }
 
 //start=*/5 * * * * *
 const messageHandler = (senderID, text='') => {
   const template = {
-    "start": () => startCron(() => sendTextMessage(senderID, "Hello from cron!"), text.split("=")[1] || ''),
+    "start": () => startCron(sendTextMessage, text.split("=")[1] || '', senderID, "Hello from cron!"),
   }
 
   const executer = template[text.split("=")[0]]
