@@ -212,7 +212,7 @@ const messageHandler = (senderID, text = '') => {
   const [action, at, message, oneTime] = text.split("\n")
   const executer = cronTemplate[action]
   if (executer) {
-    executer({ at, receiverId: senderID, message, oneTime: oneTime === "one time" })
+    executer({ at, receiverId: senderID, message, oneTime: oneTime !== "repeat" })
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
