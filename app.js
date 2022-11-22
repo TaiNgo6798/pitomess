@@ -10,6 +10,8 @@
 /* jshint node: true, devel: true */
 'use strict';
 
+const { job } = require('cron');
+
 const
   bodyParser = require('body-parser'),
   config = require('config'),
@@ -17,20 +19,6 @@ const
   express = require('express'),
   request = require('request'),
   CronJob = require('cron').CronJob;
-
-let job1;
-
-const startCron = (callback) => {
-  job1 = new CronJob(
-    '*/5 * * * * *',
-    callback,
-    null,
-    true,
-    'America/Los_Angeles'
-  );
-
-  job1.start()
-}
 
 let app = express();
 app.set('port', process.env.PORT || 6798);
@@ -174,20 +162,35 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
-const messageHandler = (senderID, text) => {
-  switch (text) {
-    case "start":
-      startCron(() => sendTextMessage(senderID, 'You will see this message every 5 seconds'))
-      break;
+const startCron = (callback, cronString) => {
+  let job = new CronJob(
+    cronString,
+    () => {
+      callback()
+      job.stop()
+    },
+    null,
+    true,
+    'America/Los_Angeles'
+  );
 
-    case "stop":
-      job1.stop()
-      break;
-  
-    default:
-      sendTextMessage(senderID, "Khum hỉu hehe");
-      break;
+  job.start()
+  return job
+}
+
+//start=*/5 * * * * *
+const messageHandler = (senderID, text) => {
+  const template = {
+    "start": () => startCron(sendTextMessage, text.split("=")[1] || ''),
   }
+
+  const executer = template[text.split("=")[0]]
+  if(executer){
+    executer()
+  } else {
+    sendTextMessage(senderID, "Khum hỉu hehe");
+  }
+
 }
 
 
