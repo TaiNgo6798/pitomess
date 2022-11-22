@@ -174,7 +174,10 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     at,
     () => {
       callback(receiverId, cronText)
-      oneTime && job.stop()
+      if(oneTime){
+        job.stop()
+        
+      }
     },
     null,
     true,
@@ -199,7 +202,7 @@ const cronTemplate = {
     cronText: message,
     oneTime: true
   }),
-  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${runningCrons.length} crons đang chạy`)
+  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${runningCrons.length} crons đang chạy. \n${JSON.stringify(runningCrons)}`)
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
