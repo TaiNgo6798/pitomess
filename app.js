@@ -158,12 +158,12 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
-const startCron = (callback, cronString, senderID, cronText) => {
+const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
   let job = new CronJob(
-    cronString,
+    at,
     () => {
-      callback(senderID, cronText)
-      job.stop()
+      callback(receiverId, cronText)
+      oneTime && job.stop()
     },
     null,
     true,
@@ -172,22 +172,28 @@ const startCron = (callback, cronString, senderID, cronText) => {
 
   try {
     const interval = parser.parseExpression(cronString);
-    sendTextMessage(senderID, `Will notice you at ${interval.next().toString()}`)
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${interval.next().toString()}`)
   } catch (err) {
-    sendTextMessage(senderID, `Parse error!`)
+    sendTextMessage(receiverId, `Parse error!`)
   }
-  return job
 }
 
-//start=*/5 * * * * *
-const messageHandler = (senderID, text='') => {
-  const template = {
-    "start": () => startCron(sendTextMessage, text.split("=")[1] || '', senderID, "Hello from cron!"),
+const cronTemplate = {
+  "start": (at='', message='') => startCron({
+    callback: sendTextMessage,
+    at,
+    receiverId: senderID,
+    cronText: message,
+    oneTime: true
   }
-
-  const executer = template[text.split("=")[0]]
-  if(executer){
-    executer()
+  ),
+}
+//start=*/5 * * * * *
+const messageHandler = (senderID, text = '') => {
+  const [action, at, message] = text.split("::")
+  const executer = cronTemplate[action]
+  if (executer) {
+    executer(at, message)
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
