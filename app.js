@@ -23,13 +23,13 @@ let job1;
 const startCron = (callback) => {
   job1 = new CronJob(
     '*/5 * * * * *',
-    callback(),
+    callback,
     null,
     true,
     'America/Los_Angeles'
   );
 
-  job.start()
+  job1.start()
 }
 
 let app = express();
