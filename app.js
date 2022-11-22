@@ -179,7 +179,7 @@ const startCron = (callback, cronString) => {
 }
 
 //start=*/5 * * * * *
-const messageHandler = (senderID, text) => {
+const messageHandler = (senderID, text='') => {
   const template = {
     "start": () => startCron(sendTextMessage, text.split("=")[1] || ''),
   }
@@ -192,7 +192,6 @@ const messageHandler = (senderID, text) => {
   }
 
 }
-
 
 /*
  * Send an image using the Send API.
