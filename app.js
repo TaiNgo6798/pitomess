@@ -169,7 +169,6 @@ const startCron = (callback, cronString) => {
     },
     null,
     true,
-    'America/Los_Angeles'
   );
 
   job.start()
