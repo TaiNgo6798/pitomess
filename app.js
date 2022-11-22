@@ -19,6 +19,8 @@ const
   dayjs = require('dayjs'),
   CronJob = require('cron').CronJob;
 
+let runningCrons = []
+
 require("dayjs/locale/en");
 dayjs.locale("en");
 
@@ -179,6 +181,8 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     "Asia/Saigon"
   );
 
+  runningCrons.push(job)
+
   try {
     const interval = parser.parseExpression(at);
     sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next())}`)
@@ -188,21 +192,21 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 }
 
 const cronTemplate = {
-  "noti": (at='', message='', receiverId) => startCron({
+  "noti": ({ at, receiverId, message }) => startCron({
     callback: sendTextMessage,
     at,
     receiverId,
     cronText: message,
     oneTime: true
-  }
-  ),
+  }),
+  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${runningCrons.length} crons đang chạy`)
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
   const [action, at, message] = text.split("\n")
   const executer = cronTemplate[action]
   if (executer) {
-    executer(at, message, senderID)
+    executer({ at, receiverId: senderID, message })
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
