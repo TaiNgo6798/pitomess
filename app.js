@@ -179,10 +179,10 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 }
 
 const cronTemplate = {
-  "start": (at='', message='') => startCron({
+  "start": (at='', message='', receiverId) => startCron({
     callback: sendTextMessage,
     at,
-    receiverId: senderID,
+    receiverId,
     cronText: message,
     oneTime: true
   }
@@ -193,7 +193,7 @@ const messageHandler = (senderID, text = '') => {
   const [action, at, message] = text.split("::")
   const executer = cronTemplate[action]
   if (executer) {
-    executer(at, message)
+    executer(at, message, senderID)
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
