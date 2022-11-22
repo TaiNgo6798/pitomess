@@ -19,6 +19,8 @@ const
   dayjs = require('dayjs'),
   CronJob = require('cron').CronJob;
 
+const { v4: uuidv4 } = require('uuid');
+
 let runningCrons = []
 
 require("dayjs/locale/en");
@@ -170,13 +172,13 @@ function receivedMessage(event) {
 }
 
 const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
+  const id = uuidv4()
   let job = new CronJob(
     at,
     () => {
       callback(receiverId, cronText)
-      if(oneTime){
-        job.stop()
-        
+      if (oneTime) {
+        runningCrons.find(v => v.id === id).job.stop()
       }
     },
     null,
@@ -184,7 +186,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     "Asia/Saigon"
   );
 
-  runningCrons.push(job)
+  runningCrons.push({ id, job })
 
   try {
     const interval = parser.parseExpression(at);
@@ -202,7 +204,7 @@ const cronTemplate = {
     cronText: message,
     oneTime: true
   }),
-  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${runningCrons.length} crons đang chạy. \n${JSON.stringify(runningCrons)}`)
+  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${runningCrons.length} crons đang chạy.`)
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
