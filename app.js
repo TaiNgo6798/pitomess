@@ -90,8 +90,6 @@ app.post('/webhook', function (req, res) {
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
-
-    console.log(data)
     // Iterate over each entry
     // There may be multiple if batched
     data.entry.forEach(function (pageEntry) {
@@ -181,7 +179,7 @@ const startCron = (callback, cronString) => {
 //start=*/5 * * * * *
 const messageHandler = (senderID, text='') => {
   const template = {
-    "start": () => startCron(sendTextMessage, text.split("=")[1] || ''),
+    "start": () => startCron(() => sendTextMessage(senderID, "Hello from cron!"), text.split("=")[1] || ''),
   }
 
   const executer = template[text.split("=")[0]]
