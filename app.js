@@ -188,7 +188,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 }
 
 const cronTemplate = {
-  "start": (at='', message='', receiverId) => startCron({
+  "noti": (at='', message='', receiverId) => startCron({
     callback: sendTextMessage,
     at,
     receiverId,
@@ -199,7 +199,7 @@ const cronTemplate = {
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
-  const [action, at, message] = text.split("::")
+  const [action, at, message] = text.split("\n")
   const executer = cronTemplate[action]
   if (executer) {
     executer(at, message, senderID)
@@ -207,94 +207,6 @@ const messageHandler = (senderID, text = '') => {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
 
-}
-
-/*
- * Send an image using the Send API.
- *
- */
-function sendImageMessage(recipientId) {
-  let messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          url: SERVER_URL + "/assets/rift.png"
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-/*
- * Send a Gif using the Send API.
- *
- */
-function sendGifMessage(recipientId) {
-  let messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          url: SERVER_URL + "/assets/instagram_logo.gif"
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-/*
- * Send audio using the Send API.
- *
- */
-function sendAudioMessage(recipientId) {
-  let messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "audio",
-        payload: {
-          url: SERVER_URL + "/assets/sample.mp3"
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-/*
- * Send a video using the Send API.
- *
- */
-function sendVideoMessage(recipientId) {
-  let messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "video",
-        payload: {
-          url: SERVER_URL + "/assets/allofus480.mov"
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
 }
 
 
@@ -350,7 +262,7 @@ function callSendAPI(messageData) {
 // certificate authority.
 app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
-  sendTextMessage(config.get('myInboxId'), "Deployed!")
+  sendTextMessage(config.get('myInboxId'), `Deployed: ${parseTime(Date.now())}`)
 });
 
 module.exports = app;
