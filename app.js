@@ -177,7 +177,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     at,
     () => {
       callback(receiverId, cronText)
-      if (oneTime) {
+      if (true) {
         runningCrons[id].stop()
         delete runningCrons[id]
       }
