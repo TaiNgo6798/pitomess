@@ -21,7 +21,7 @@ const
 
 const { v4: uuidv4 } = require('uuid');
 
-let runningCrons = []
+let runningCrons = {}
 
 require("dayjs/locale/en");
 dayjs.locale("en");
@@ -178,7 +178,8 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     () => {
       callback(receiverId, cronText)
       if (oneTime) {
-        runningCrons.find(v => v.id === id).job.stop()
+        runningCrons[id].stop()
+        delete runningCrons[id]
       }
     },
     null,
@@ -186,7 +187,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     "Asia/Saigon"
   );
 
-  runningCrons.push({ id, job })
+  runningCrons[id] = job
 
   try {
     const interval = parser.parseExpression(at);
@@ -204,7 +205,7 @@ const cronTemplate = {
     cronText: message,
     oneTime: true
   }),
-  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${runningCrons.length} crons đang chạy.`)
+  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy.`)
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
