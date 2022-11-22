@@ -173,15 +173,26 @@ function receivedMessage(event) {
   let messageText = message.text;
 
   if (messageText) {
-    cronTemplate[messageText]() || sendTextMessage(senderID, "ok em iu :)))");
+    cronTemplate(messageText)
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
 }
 
-const cronTemplate = {
-  "start": () => startCron(() => sendTextMessage("6043597102340868", 'You will see this message every 5 seconds')),
-  "stop": () => job1.stop()
+const cronTemplate = (text) => {
+  switch (text) {
+    case "start":
+      startCron(() => sendTextMessage("6043597102340868", 'You will see this message every 5 seconds'))
+      break;
+
+    case "stop":
+      job1.stop()
+      break;
+  
+    default:
+      sendTextMessage(senderID, "ok em iu :)))")
+      break;
+  }
 }
 
 
