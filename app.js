@@ -15,7 +15,22 @@ const
   config = require('config'),
   crypto = require('crypto'),
   express = require('express'),
-  request = require('request');
+  request = require('request'),
+  CronJob = require('cron').CronJob;
+
+let job1;
+
+const startCron = (callback) => {
+  job1 = new CronJob(
+    '*/5 * * * * *',
+    callback(),
+    null,
+    true,
+    'America/Los_Angeles'
+  );
+
+  job.start()
+}
 
 let app = express();
 app.set('port', process.env.PORT || 6798);
@@ -88,7 +103,7 @@ app.post('/webhook', function (req, res) {
   // Make sure this is a page subscription
   if (data.object == 'page') {
 
-    console.log(data.object)
+    console.log(data)
     // Iterate over each entry
     // There may be multiple if batched
     data.entry.forEach(function (pageEntry) {
@@ -156,13 +171,17 @@ function receivedMessage(event) {
 
   // You may get a text or attachment but not both
   let messageText = message.text;
-  let messageAttachments = message.attachments;
 
   if (messageText) {
-    sendTextMessage(senderID, "ok em iu :)))");
+    cronTemplate(messageText) || sendTextMessage(senderID, "ok em iu :)))");
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
+}
+
+const cronTemplate = {
+  "start": () => startCron(() => sendTextMessage("6043597102340868", 'You will see this message every 5 seconds')),
+  "stop": () => job1.stop()
 }
 
 
