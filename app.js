@@ -167,12 +167,12 @@ const startCron = (callback, cronString, senderID, cronText) => {
     },
     null,
     true,
+    "Asia/Saigon"
   );
-  job.start()
 
   try {
     const interval = parser.parseExpression(cronString);
-    sendTextMessage(senderID, `Will notice you at ${interval.next().toISOString()}`)
+    sendTextMessage(senderID, `Will notice you at ${interval.next().toString()}`)
   } catch (err) {
     sendTextMessage(senderID, `Parse error!`)
   }
