@@ -198,21 +198,21 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 }
 
 const cronTemplate = {
-  "noti": ({ at, receiverId, message }) => startCron({
+  "noti": ({ at, receiverId, message, oneTime=true }) => startCron({
     callback: sendTextMessage,
     at,
     receiverId,
     cronText: message,
-    oneTime: true
+    oneTime
   }),
   "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy.`)
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
-  const [action, at, message] = text.split("\n")
+  const [action, at, message, oneTime] = text.split("\n")
   const executer = cronTemplate[action]
   if (executer) {
-    executer({ at, receiverId: senderID, message })
+    executer({ at, receiverId: senderID, message, oneTime: oneTime === "one time" })
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
