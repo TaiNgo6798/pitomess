@@ -171,18 +171,13 @@ function receivedMessage(event) {
 
   // You may get a text or attachment but not both
   let messageText = message.text;
-
-  if (messageText) {
-    cronTemplate(messageText)
-  } else {
-    sendTextMessage(senderID, "Khum hỉu hehe");
-  }
+  messageHandler(senderID, messageText)
 }
 
-const cronTemplate = (text) => {
+const messageHandler = (senderID, text) => {
   switch (text) {
     case "start":
-      startCron(() => sendTextMessage("6043597102340868", 'You will see this message every 5 seconds'))
+      startCron(() => sendTextMessage(senderID, 'You will see this message every 5 seconds'))
       break;
 
     case "stop":
@@ -190,7 +185,7 @@ const cronTemplate = (text) => {
       break;
   
     default:
-      sendTextMessage(senderID, "ok em iu :)))")
+      sendTextMessage(senderID, "Khum hỉu hehe");
       break;
   }
 }
