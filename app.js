@@ -173,7 +173,7 @@ function receivedMessage(event) {
   let messageText = message.text;
 
   if (messageText) {
-    cronTemplate(messageText) || sendTextMessage(senderID, "ok em iu :)))");
+    cronTemplate[messageText]() || sendTextMessage(senderID, "ok em iu :)))");
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
