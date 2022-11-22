@@ -16,7 +16,16 @@ const
   express = require('express'),
   request = require('request'),
   parser = require('cron-parser'),
+  dayjs = require('dayjs'),
   CronJob = require('cron').CronJob;
+
+require("dayjs/locale/en");
+dayjs.locale("en");
+
+const parseTime = (time) => {
+  if (!time) return "u never know :)"
+  return dayjs(time).format("HH:mm ngày DD/MM/YYYY");
+};
 
 let app = express();
 app.set('port', process.env.PORT || 6798);
@@ -172,7 +181,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 
   try {
     const interval = parser.parseExpression(at);
-    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${interval.next().toString()}`)
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next())}`)
   } catch (err) {
     sendTextMessage(receiverId, `Parse error!`)
   }
