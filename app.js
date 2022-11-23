@@ -38,8 +38,8 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 setInterval(() => {
-  console.log(`${dayjs(Date.now()).tz(DEFAULT_TIMEZONE).format("DD/MM/YYYY [at] HH:mm")}:::Ping server`)
-}, 5000);
+  console.log(`:::Ping server:::`)
+}, 2000);
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -201,13 +201,13 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 
   try {
     const interval = parser.parseExpression(at);
-    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next())}`)
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
   } catch (err) {
     sendTextMessage(receiverId, `Parse error!`)
   }
 }
 
-const cronTemplate = {
+const automationMessage = {
   "noti": ({ at, receiverId, message, oneTime = true }) => startCron({
     callback: sendTextMessage,
     at,
@@ -228,7 +228,7 @@ const cronTemplate = {
 const messageHandler = (senderID, text = '') => {
   try {
     const [action, at, message, interval=""] = text.split("\n")
-    const executer = cronTemplate[action]
+    const executer = automationMessage[action]
     if (executer) {
       executer({ at, receiverId: senderID, message, oneTime: interval !== "repeat" })
     } else {
