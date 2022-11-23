@@ -227,7 +227,7 @@ const cronTemplate = {
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
   try {
-    const [action, at, message, interval] = text.split("\n")
+    const [action, at, message, interval=""] = text.split("\n")
     const executer = cronTemplate[action]
     if (executer) {
       executer({ at, receiverId: senderID, message, oneTime: interval !== "repeat" })
