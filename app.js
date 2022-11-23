@@ -176,7 +176,7 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
-const parseTime = (time, useTimeZone=true) => {
+const parseTime = (time, useTimeZone = true) => {
   if (!time) return "u never know :)"
   const date = useTimeZone ? dayjs(time).tz(DEFAULT_TIMEZONE) : dayjs(time)
   return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
@@ -201,8 +201,8 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
   runningCrons[id] = job
 
   try {
-    const interval = parser.parseExpression(at, {tz: DEFAULT_TIMEZONE});
-    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate(), NO_TIMEZONE)}`)
+    const interval = parser.parseExpression(at, { tz: DEFAULT_TIMEZONE });
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${interval.next().toDate()}`)
   } catch (err) {
     sendTextMessage(receiverId, `Parse error!`)
   }
@@ -228,14 +228,14 @@ const automationMessage = {
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
   try {
-    const [action, at, message, interval=""] = text.split("\n")
+    const [action, at, message, interval = ""] = text.split("\n")
     const executer = automationMessage[action]
     if (executer) {
       executer({ at, receiverId: senderID, message, oneTime: interval !== "repeat" })
     } else {
       sendTextMessage(senderID, "Khum hỉu hehe");
     }
-  } catch(err){
+  } catch (err) {
     sendTextMessage(senderID, err.message)
   }
 }
