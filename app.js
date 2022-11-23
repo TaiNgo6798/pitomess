@@ -205,9 +205,11 @@ const parseTime = (time, useTimeZone = true, timezone = DEFAULT_TIMEZONE) => {
 }
 
 const startCronMessage = ({ callback, at, receiverId, cronText, oneTime }) => {
+  let atArray = "* * * * *".split(" ")
+  let cronString = atArray.map((v, k) => at.split(" ").reverse()[k] || v).join(" ")
   const id = uuidv4()
   let job = new CronJob(
-    at,
+    cronString,
     () => {
       callback(receiverId, cronText)
       if (oneTime) {
@@ -223,7 +225,7 @@ const startCronMessage = ({ callback, at, receiverId, cronText, oneTime }) => {
   runningCrons[id] = job
 
   try {
-    const interval = parser.parseExpression(at);
+    const interval = parser.parseExpression(cronString);
     let timeString = interval.next().toString()
     sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(timeString, NO_TIMEZONE)}`)
   } catch (err) {
