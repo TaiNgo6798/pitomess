@@ -19,6 +19,7 @@ const
   dayjs = require('dayjs'),
   CronJob = require('cron').CronJob;
 
+const DEFAULT_TIMEZONE = "Asia/Saigon"
 const { v4: uuidv4 } = require('uuid');
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
@@ -28,8 +29,6 @@ dayjs.locale("en");
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(isToday)
-dayjs.tz.setDefault("Asia/Saigon")
-
 
 let runningCrons = {}
 let app = express();
@@ -39,7 +38,7 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 setInterval(() => {
-  console.log(`${dayjs(Date.now()).format("DD/MM/YYYY [at] HH:mm")}:::Ping server`)
+  console.log(`${dayjs(Date.now()).tz(DEFAULT_TIMEZONE).format("DD/MM/YYYY [at] HH:mm")}:::Ping server`)
 }, 5000);
 
 /*
@@ -178,7 +177,7 @@ function receivedMessage(event) {
 
 const parseTime = (time) => {
   if (!time) return "u never know :)"
-  const date = dayjs(time)
+  const date = dayjs(time).tz(DEFAULT_TIMEZONE)
   return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
 }
 
