@@ -198,7 +198,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 }
 
 const cronTemplate = {
-  "noti": ({ at, receiverId, message, oneTime=true }) => startCron({
+  "noti": ({ at, receiverId, message, oneTime = true }) => startCron({
     callback: sendTextMessage,
     at,
     receiverId,
@@ -206,13 +206,13 @@ const cronTemplate = {
     oneTime
   }),
   "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`),
-  "clear": () => {
+  "clear": ({ receiverId }) => {
     Object.entries(runningCrons).map(([id, job]) => {
-    job.stop()
-    delete runningCrons[id]
-  })
-  sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`)
-}
+      job.stop()
+      delete runningCrons[id]
+    })
+    sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`)
+  }
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
