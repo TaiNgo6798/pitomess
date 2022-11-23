@@ -20,8 +20,15 @@ const
   CronJob = require('cron').CronJob;
 
 const { v4: uuidv4 } = require('uuid');
-require("dayjs/locale/vi");
-dayjs.locale("vi");
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+const isToday = require('dayjs/plugin/isToday')
+require("dayjs/locale/en");
+dayjs.locale("en");
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(isToday)
+dayjs.tz.setDefault("Asia/Saigon")
 
 
 let runningCrons = {}
@@ -32,7 +39,7 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 setInterval(() => {
-  console.log(`${parseTime(Date.now())}:::Ping server`)
+  console.log(`${dayjs(Date.now()).format("DD/MM/YYYY [at] HH:mm")}:::Ping server`)
 }, 5000);
 
 /*
@@ -171,7 +178,8 @@ function receivedMessage(event) {
 
 const parseTime = (time) => {
   if (!time) return "u never know :)"
-  return dayjs(time).format("HH:mm ngày DD/MM/YYYY");
+  const date = dayjs(time)
+  return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
 }
 
 const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
