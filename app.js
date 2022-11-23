@@ -195,7 +195,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
     },
     null,
     true,
-    "Asia/Saigon"
+    DEFAULT_TIMEZONE
   );
 
   runningCrons[id] = job
