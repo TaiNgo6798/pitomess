@@ -20,6 +20,7 @@ const
   CronJob = require('cron').CronJob;
 
 const DEFAULT_TIMEZONE = "Asia/Saigon"
+const NO_TIMEZONE = false
 const { v4: uuidv4 } = require('uuid');
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
@@ -175,9 +176,9 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
-const parseTime = (time) => {
+const parseTime = (time, useTimeZone=true) => {
   if (!time) return "u never know :)"
-  const date = dayjs(time).tz(DEFAULT_TIMEZONE)
+  const date = useTimeZone ? dayjs(time) : dayjs(time).tz(DEFAULT_TIMEZONE)
   return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
 }
 
@@ -200,8 +201,8 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
   runningCrons[id] = job
 
   try {
-    const interval = parser.parseExpression(at);
-    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
+    const interval = parser.parseExpression(at, {tz: DEFAULT_TIMEZONE});
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate()), NO_TIMEZONE}`)
   } catch (err) {
     sendTextMessage(receiverId, `Parse error!`)
   }
