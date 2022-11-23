@@ -205,11 +205,14 @@ const cronTemplate = {
     cronText: message,
     oneTime
   }),
-  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy.`),
-  "clear": () => Object.entries(runningCrons).map(([id, job]) => {
+  "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`),
+  "clear": () => {
+    Object.entries(runningCrons).map(([id, job]) => {
     job.stop()
     delete runningCrons[id]
   })
+  sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`)
+}
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
