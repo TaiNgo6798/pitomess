@@ -38,11 +38,28 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
+const clearAllCrons = ({ receiverId }) => {
+  Object.entries(runningCrons).map(([id, job]) => {
+    job.stop()
+    delete runningCrons[id]
+  })
+  console.log("Cleared all crons!")
+  receiverId && sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`)
+}
+
 setInterval(() => {
   console.log(`:::Ping server:::`)
-  // const interval = parser.parseExpression("13 11 * * *");
+  // const interval = parser.parseExpression("* 00 * * *");
   // console.log(`Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
-}, 2000);
+}, 10000);
+
+new CronJob(
+  "* 00 * * *",
+ () => clearAllCrons({}),
+  null,
+  true,
+  DEFAULT_TIMEZONE
+);
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -184,7 +201,7 @@ const parseTime = (time, useTimeZone = true, timezone = DEFAULT_TIMEZONE) => {
   return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
 }
 
-const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
+const startCronMessage = ({ callback, at, receiverId, cronText, oneTime }) => {
   const id = uuidv4()
   let job = new CronJob(
     at,
@@ -212,7 +229,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 }
 
 const automationMessage = {
-  "noti": ({ at, receiverId, message, oneTime = true }) => startCron({
+  "noti": ({ at, receiverId, message, oneTime = true }) => startCronMessage({
     callback: sendTextMessage,
     at,
     receiverId,
@@ -220,14 +237,9 @@ const automationMessage = {
     oneTime
   }),
   "crons": ({ receiverId }) => sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`),
-  "clear": ({ receiverId }) => {
-    Object.entries(runningCrons).map(([id, job]) => {
-      job.stop()
-      delete runningCrons[id]
-    })
-    sendTextMessage(receiverId, `Có ${Object.keys(runningCrons).length} crons đang chạy`)
-  }
+  "clear": clearAllCrons
 }
+
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
   try {
