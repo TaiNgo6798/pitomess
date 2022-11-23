@@ -40,6 +40,8 @@ app.use(express.static('public'));
 
 setInterval(() => {
   console.log(`:::Ping server:::`)
+  // const interval = parser.parseExpression("13 11 * * *");
+  // console.log(`Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
 }, 2000);
 
 /*
@@ -176,9 +178,9 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
-const parseTime = (time, useTimeZone = true) => {
+const parseTime = (time, useTimeZone = true, timezone = DEFAULT_TIMEZONE) => {
   if (!time) return "u never know :)"
-  const date = useTimeZone ? dayjs(time).tz(DEFAULT_TIMEZONE) : dayjs(time)
+  const date = useTimeZone ? dayjs(time).tz(timezone) : dayjs(time)
   return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
 }
 
@@ -201,8 +203,8 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
   runningCrons[id] = job
 
   try {
-    const interval = parser.parseExpression(at, { tz: DEFAULT_TIMEZONE });
-    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${interval.next().toDate()}`)
+    const interval = parser.parseExpression(at);
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
   } catch (err) {
     sendTextMessage(receiverId, `Parse error!`)
   }
