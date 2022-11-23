@@ -17,6 +17,7 @@ const
   request = require('request'),
   parser = require('cron-parser'),
   dayjs = require('dayjs'),
+  axios = require('axios'),
   CronJob = require('cron').CronJob;
 
 const DEFAULT_TIMEZONE = "Asia/Saigon"
@@ -48,10 +49,12 @@ const clearAllCrons = ({ receiverId }) => {
 }
 
 setInterval(() => {
-  console.log(`:::Ping server:::`)
+  axios.get('https://pitomess.herokuapp.com/').then((res) => {
+    console.log(`:::Ping server:::${res.data}`)
+  })
   // const interval = parser.parseExpression("* 00 * * *");
   // console.log(`Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
-}, 10000);
+}, 1000 * 60 * 10);
 
 new CronJob(
   "* 00 * * *",
