@@ -226,14 +226,17 @@ const cronTemplate = {
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
-  const [action, at, message, interval] = text.split("\n")
-  const executer = cronTemplate[action]
-  if (executer) {
-    executer({ at, receiverId: senderID, message, oneTime: interval !== "repeat" })
-  } else {
-    sendTextMessage(senderID, "Khum hỉu hehe");
+  try {
+    const [action, at, message, interval] = text.split("\n")
+    const executer = cronTemplate[action]
+    if (executer) {
+      executer({ at, receiverId: senderID, message, oneTime: interval !== "repeat" })
+    } else {
+      sendTextMessage(senderID, "Khum hỉu hehe");
+    }
+  } catch(err){
+    sendTextMessage(senderID, err.message)
   }
-
 }
 
 
