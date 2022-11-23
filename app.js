@@ -20,22 +20,20 @@ const
   CronJob = require('cron').CronJob;
 
 const { v4: uuidv4 } = require('uuid');
-
-let runningCrons = {}
-
 require("dayjs/locale/en");
 dayjs.locale("en");
 
-const parseTime = (time) => {
-  if (!time) return "u never know :)"
-  return dayjs(time).format("HH:mm ngày DD/MM/YYYY");
-};
 
+let runningCrons = {}
 let app = express();
 app.set('port', process.env.PORT || 6798);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
+
+setInterval(() => {
+  console.log(`${parseTime(Date.now())}:::Ping server`)
+}, 5000);
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -171,6 +169,11 @@ function receivedMessage(event) {
   messageHandler(senderID, messageText)
 }
 
+const parseTime = (time) => {
+  if (!time) return "u never know :)"
+  return dayjs(time).format("HH:mm ngày DD/MM/YYYY");
+}
+
 const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
   const id = uuidv4()
   let job = new CronJob(
@@ -216,10 +219,10 @@ const cronTemplate = {
 }
 //start=*/5 * * * * *
 const messageHandler = (senderID, text = '') => {
-  const [action, at, message, oneTime] = text.split("\n")
+  const [action, at, message, interval] = text.split("\n")
   const executer = cronTemplate[action]
   if (executer) {
-    executer({ at, receiverId: senderID, message, oneTime: oneTime !== "repeat" })
+    executer({ at, receiverId: senderID, message, oneTime: interval !== "repeat" })
   } else {
     sendTextMessage(senderID, "Khum hỉu hehe");
   }
