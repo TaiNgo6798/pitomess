@@ -178,7 +178,7 @@ function receivedMessage(event) {
 
 const parseTime = (time, useTimeZone=true) => {
   if (!time) return "u never know :)"
-  const date = useTimeZone ? dayjs(time) : dayjs(time).tz(DEFAULT_TIMEZONE)
+  const date = useTimeZone ? dayjs(time).tz(DEFAULT_TIMEZONE) : dayjs(time)
   return date.isToday() ? date.format("HH:mm [hôm nay]") : date.format("HH:mm [ngày] DD/MM/YYYY");
 }
 
