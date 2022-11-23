@@ -202,7 +202,7 @@ const startCron = ({ callback, at, receiverId, cronText, oneTime }) => {
 
   try {
     const interval = parser.parseExpression(at, {tz: DEFAULT_TIMEZONE});
-    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate()), NO_TIMEZONE}`)
+    sendTextMessage(receiverId, `Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate(), NO_TIMEZONE)}`)
   } catch (err) {
     sendTextMessage(receiverId, `Parse error!`)
   }
