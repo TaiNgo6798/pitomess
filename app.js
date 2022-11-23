@@ -20,8 +20,8 @@ const
   CronJob = require('cron').CronJob;
 
 const { v4: uuidv4 } = require('uuid');
-require("dayjs/locale/en");
-dayjs.locale("en");
+require("dayjs/locale/vi");
+dayjs.locale("vi");
 
 
 let runningCrons = {}
