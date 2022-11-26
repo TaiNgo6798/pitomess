@@ -54,15 +54,15 @@ setInterval(() => {
   })
   // const interval = parser.parseExpression("* 00 * * *");
   // console.log(`Oke toi sẽ nhắc bạn lúc ${parseTime(interval.next().toDate())}`)
-}, 1000 * 60 * 20);
+}, 1000 * 60 * 10);
 
-new CronJob(
-  "* 00 * * *",
- () => clearAllCrons({}),
-  null,
-  true,
-  DEFAULT_TIMEZONE
-);
+// new CronJob(
+//   "* 00 * * *",
+//  () => clearAllCrons({}),
+//   null,
+//   true,
+//   DEFAULT_TIMEZONE
+// );
 
 /*
  * Be sure to setup your config values before running this code. You can 
